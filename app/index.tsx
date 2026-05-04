@@ -1,9 +1,11 @@
+import { api } from "@/api/axios-config";
 import Botao from "@/components/Botao/Botao";
 import Cabecalho from "@/components/Cabecalho/Cabecalho";
 import CampoTexto from "@/components/CampoTexto/CampoTexto";
+import axios from "axios";
 import { useFonts } from "expo-font";
 import { useState } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Alert, StyleSheet, View } from "react-native";
 
 const App = () => {
   const [loaded, error] = useFonts({
@@ -15,6 +17,25 @@ const App = () => {
 
   const [email, setEmail] = useState<string>("");
   const [senha, setSenha] = useState<string>("");
+
+  async function logIn() {
+    try {
+      const { data, status } = await api.post("/login", {
+        email: email,
+        senha: senha,
+      });
+
+      if (status == 200) {
+        return Alert.alert("Bem vindo");
+      }
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          Alert.alert("Usuário ou senha incorretos");
+        }
+      }
+    }
+  }
 
   if (!loaded && !error) {
     return (
@@ -40,7 +61,11 @@ const App = () => {
           texto={senha}
           setTexto={setSenha}
         />
-        <Botao funcao={() => {}} />
+        <Botao
+          funcao={() => {
+            logIn();
+          }}
+        />
       </View>
     </View>
   );
