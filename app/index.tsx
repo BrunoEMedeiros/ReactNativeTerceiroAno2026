@@ -1,8 +1,7 @@
-import { api } from "@/api/axios-config";
+import { logIn } from "@/api/features/logIn";
 import Botao from "@/components/Botao/Botao";
 import Cabecalho from "@/components/Cabecalho/Cabecalho";
 import CampoTexto from "@/components/CampoTexto/CampoTexto";
-import axios from "axios";
 import { useFonts } from "expo-font";
 import { useState } from "react";
 import { ActivityIndicator, Alert, StyleSheet, View } from "react-native";
@@ -17,25 +16,28 @@ const App = () => {
 
   const [email, setEmail] = useState<string>("");
   const [senha, setSenha] = useState<string>("");
+  const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
+  const [isSenhaValid, setIsSenhaValid] = useState<boolean>(true);
 
-  async function logIn() {
-    try {
-      const { data, status } = await api.post("/login", {
-        email: email,
-        senha: senha,
-      });
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      if (status == 200) {
-        return Alert.alert("Bem vindo");
-      }
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === 401) {
-          Alert.alert("Usuário ou senha incorretos");
-        }
-      }
+  const handleEmailChange = (texto: string) => {
+    setEmail(texto);
+
+    if (emailRegex.test(texto)) {
+      return setIsEmailValid(true);
     }
-  }
+    return setIsEmailValid(false);
+  };
+
+  const handleSenhaChange = (texto: string) => {
+    setSenha(texto);
+
+    if (texto.length < 5) {
+      return setIsSenhaValid(false);
+    }
+    return setIsSenhaValid(true);
+  };
 
   if (!loaded && !error) {
     return (
@@ -53,17 +55,24 @@ const App = () => {
           placeholder="Digite seu email"
           label="E-mail"
           texto={email}
-          setTexto={setEmail}
+          setTexto={handleEmailChange}
+          isValid={isEmailValid}
+          errorMessage="Email invalido"
         />
         <CampoTexto
           placeholder="Digite sua senha"
           label="Senha"
           texto={senha}
-          setTexto={setSenha}
+          setTexto={handleSenhaChange}
+          isValid={isSenhaValid}
+          errorMessage="Senha deve ter no minimo 5 caracteres"
         />
         <Botao
-          funcao={() => {
-            logIn();
+          funcao={async () => {
+            const response = await logIn(email, senha);
+            if (response) {
+            }
+            return Alert.alert("Usuário ou senha incorretas");
           }}
         />
       </View>
@@ -80,9 +89,9 @@ const estilo = StyleSheet.create({
   },
   fieldsContainer: {
     flex: 1,
-    justifyContent: "center",
+    marginTop: 170,
     alignItems: "center",
-    gap: 12,
+    gap: 30,
   },
 });
 
