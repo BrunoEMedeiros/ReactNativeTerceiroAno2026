@@ -3,7 +3,7 @@ import Botao from "@/components/Botao/Botao";
 import Cabecalho from "@/components/Cabecalho/Cabecalho";
 import CampoTexto from "@/components/CampoTexto/CampoTexto";
 import { useFonts } from "expo-font";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, StyleSheet, View } from "react-native";
 
 const App = () => {
@@ -14,30 +14,28 @@ const App = () => {
     "Playwrite-NO": require("../assets/fonts/PlaywriteNO-Regular.ttf"),
   });
 
-  const [email, setEmail] = useState<string>("");
+  const [email, setEmail] = useState<string>("teste@teste.com");
   const [senha, setSenha] = useState<string>("");
   const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
   const [isSenhaValid, setIsSenhaValid] = useState<boolean>(true);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const handleEmailChange = (texto: string) => {
-    setEmail(texto);
-
-    if (emailRegex.test(texto)) {
-      return setIsEmailValid(true);
+  useEffect(() => {
+    if (emailRegex.test(email)) {
+      setIsEmailValid(true);
+    } else {
+      setIsEmailValid(false);
     }
-    return setIsEmailValid(false);
-  };
+  }, [email]);
 
-  const handleSenhaChange = (texto: string) => {
-    setSenha(texto);
-
+  function validarSenha(texto: string) {
     if (texto.length < 5) {
-      return setIsSenhaValid(false);
+      setIsSenhaValid(false);
+    } else {
+      setIsSenhaValid(true);
     }
-    return setIsSenhaValid(true);
-  };
+  }
 
   if (!loaded && !error) {
     return (
@@ -55,25 +53,27 @@ const App = () => {
           placeholder="Digite seu email"
           label="E-mail"
           texto={email}
-          setTexto={handleEmailChange}
+          setTexto={setEmail}
           isValid={isEmailValid}
-          errorMessage="Email invalido"
+          errorMessage="E-mail inválido"
         />
         <CampoTexto
           placeholder="Digite sua senha"
           label="Senha"
           texto={senha}
-          setTexto={handleSenhaChange}
+          setTexto={validarSenha}
           isValid={isSenhaValid}
           errorMessage="Senha deve ter no minimo 5 caracteres"
         />
         <Botao
+          title="Entrar"
           funcao={async () => {
             const response = await logIn(email, senha);
             if (response) {
             }
             return Alert.alert("Usuário ou senha incorretas");
           }}
+          disabled={!isEmailValid && !isSenhaValid ? true : false}
         />
       </View>
     </View>

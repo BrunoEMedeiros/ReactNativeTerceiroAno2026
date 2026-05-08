@@ -1,11 +1,13 @@
-import { Pressable, StyleSheet, Text } from "react-native";
-interface BotaoProps {
+import { ButtonProps, Pressable, StyleSheet, Text } from "react-native";
+
+interface BotaoProps extends ButtonProps {
   funcao: () => void;
+  title: string;
 }
-const Botao = ({ funcao }: BotaoProps) => {
+const Botao = ({ title, funcao, ...props }: BotaoProps) => {
   return (
-    <Pressable style={estilo.botao} onPress={() => funcao()}>
-      <Text style={estilo.label}>Entrar</Text>
+    <Pressable style={estilo.botao} onPress={() => funcao()} {...props}>
+      <Text style={estilo.label}>{title}</Text>
     </Pressable>
   );
 };

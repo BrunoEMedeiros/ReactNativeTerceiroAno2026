@@ -4,6 +4,7 @@ interface CampoTextoProps {
   label: string;
   placeholder: string;
   texto: string;
+  // setTexto: React.Dispatch<SetStateAction<string>>;
   setTexto: Function;
   isValid: boolean;
   errorMessage: string;
@@ -24,7 +25,7 @@ const CampoTexto = ({
         style={[estilo.textInput, !isValid && estilo.errorBorder]}
         placeholder={placeholder}
         placeholderTextColor={"#999999"}
-        value={texto}
+        // value={texto}
         onChangeText={(texto) => setTexto(texto)}
       />
       {!isValid && <Text style={estilo.errorText}>{errorMessage}</Text>}
@@ -56,7 +57,6 @@ const estilo = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#D70040",
   },
-
   errorText: {
     color: "#D70040",
   },
