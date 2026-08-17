@@ -1,14 +1,48 @@
-import React from "react";
-import { View, Text } from "react-native";
-import "../global.css";
-import Botao from "@/components/botao/botao";
-const App = () => {
+import React, { useEffect, useState } from "react";
+import { Text, View } from "react-native";
+
+export default function App() {
+  //   const [count, setCount] = useState(0);
+
+  //   return (
+  //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+  //       <Text style={{ fontSize: 40 }}>{count}</Text>
+  //       <Button title="+1" onPress={() => setCount(count + 1)} />
+  //       <Button title="-1" onPress={() => setCount(count - 1)} />
+  //     </View>
+  //   );
+
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setSeconds((s) => s + 1);
+    }, 1000);
+
+    return () => clearInterval(id); // cleanup
+  }, []); // [] = roda 1x ao montar
+
   return (
-    <View className="flex-1 justify-center items-center bg-black">
-      <Text className="text-white">Primeiria tela com Native Wind</Text>
-      <Botao className="mt-4" children={"Clique em mim"} />
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text style={{ fontSize: 40 }}>{seconds}s</Text>
     </View>
   );
-};
+}
 
-export default App;
+// export default function Cronometro() {
+//   const [seconds, setSeconds] = useState(0);
+
+//   useEffect(() => {
+//     const id = setInterval(() => {
+//       setSeconds((s) => s + 1);
+//     }, 1000);
+
+//     return () => clearInterval(id); // cleanup
+//   }, []); // [] = roda 1x ao montar
+
+//   return (
+//     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+//       <Text style={{ fontSize: 40 }}>{seconds}s</Text>
+//     </View>
+//   );
+// }

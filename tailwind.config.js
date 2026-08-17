@@ -6,4 +6,12 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ["GoogleSans-Regular"],
+        bold: ["GoogleSans-Bold"],
+      },
+    },
+  },
 };
