@@ -27,17 +27,22 @@ const CampoDeTexto = ({
 }: CampoDeTextoProps) => {
   return (
     <View>
-      <View className={cn("gap-4 bg-blue-400", viewClassName)}>
-        <Text className={cn("text-black", labelClassName)}>{label}</Text>
+      <View className={cn("gap-1", viewClassName)}>
+        <Text className={cn("text-black text-xl", labelClassName)}>
+          {label}
+        </Text>
         <TextInput
           value={value}
           onChangeText={(e) => setValue(e)}
           placeholder={placeholder}
-          className={cn("bg-white p-6 w-48", textInputClassName)}
+          className={cn(
+            "bg-white p-4 w-72 text-lg rounded-2xl",
+            textInputClassName
+          )}
         />
       </View>
       {isError ? (
-        <Text className="text-red-600 mt-4">{errorMessage}</Text>
+        <Text className="text-red-600 mt-2">{errorMessage}</Text>
       ) : null}
     </View>
   );

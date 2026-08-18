@@ -1,5 +1,6 @@
 import Botao from "@/components/Botao/botao";
 import CampoDeTexto from "@/components/CampoDeTexto/CampoDeTexto";
+import StyledLinearGradient from "@/components/StyledLinearGradient/StyledLinearGradient";
 import "@/global.css";
 import { signinSchema, SigninSchema } from "@/schemas/signin.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -67,12 +68,17 @@ const App = () => {
   }
 
   return (
-    <View className="bg-white flex-1 justify-center items-center">
-      <View className="bg-black border rounded-xl p-4">
+    <StyledLinearGradient
+      colors={["#7a28cb", "#494368"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      className="flex-1 justify-center items-center"
+    >
+      <View className="bg-[#c299eb] p-6 rounded-2xl">
         <View className="mb-8 items-center">
           <Text className="font-sans text-black text-2xl">Entrar</Text>
         </View>
-        <View className="gap-4">
+        <View className="gap-6">
           <CampoDeTexto
             label="E-mail"
             value={email}
@@ -86,14 +92,22 @@ const App = () => {
             value={senha}
             setValue={setSenha}
             errorMessage="Senha invalida"
+            placeholder="Digite sua senha"
             isError={isErrorInSenha}
           />
         </View>
-        <View className="items-center">
-          <Botao className="w-20" children={<Text>Entrar</Text>} />
+        <View className="items-center mt-8">
+          <Botao
+            className="w-20"
+            children={
+              <View className="justify-center items-center">
+                <Text className="text-white text-xl">Entrar</Text>
+              </View>
+            }
+          />
         </View>
       </View>
-    </View>
+    </StyledLinearGradient>
   );
 };
 export default App;
