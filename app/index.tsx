@@ -28,21 +28,3 @@ export default function App() {
     </View>
   );
 }
-
-// export default function Cronometro() {
-//   const [seconds, setSeconds] = useState(0);
-
-//   useEffect(() => {
-//     const id = setInterval(() => {
-//       setSeconds((s) => s + 1);
-//     }, 1000);
-
-//     return () => clearInterval(id); // cleanup
-//   }, []); // [] = roda 1x ao montar
-
-//   return (
-//     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-//       <Text style={{ fontSize: 40 }}>{seconds}s</Text>
-//     </View>
-//   );
-// }
