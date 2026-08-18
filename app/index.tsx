@@ -1,30 +1,99 @@
+import Botao from "@/components/Botao/botao";
+import CampoDeTexto from "@/components/CampoDeTexto/CampoDeTexto";
+import "@/global.css";
+import { signinSchema, SigninSchema } from "@/schemas/signin.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Resolver, useForm } from "react-hook-form";
+import { ActivityIndicator, Text, View } from "react-native";
 
-export default function App() {
-  //   const [count, setCount] = useState(0);
+const App = () => {
+  //Importando fontes externas
+  const [fontsLoaded, fontError] = useFonts({
+    "GoogleSans-Regular": require("@/assets/fonts/GoogleSans-Regular.ttf"),
+    "GoogleSans-Bold": require("@/assets/fonts/GoogleSans-Bold.ttf"),
+  });
 
-  //   return (
-  //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-  //       <Text style={{ fontSize: 40 }}>{count}</Text>
-  //       <Button title="+1" onPress={() => setCount(count + 1)} />
-  //       <Button title="-1" onPress={() => setCount(count - 1)} />
-  //     </View>
-  //   );
+  //Chamando a splashScreen para carregar no momento certo
+  SplashScreen.preventAutoHideAsync();
 
-  const [seconds, setSeconds] = useState(0);
+  //A splash screen sera retirada apenas quando as fontes terminarem de carregar
+  useEffect(() => {
+    if (fontsLoaded || fontError) {
+      SplashScreen.hide();
+      if (fontError) throw fontError;
+    }
+  }, [fontsLoaded, fontError]);
+
+  // Controler do react hook form
+  const {
+    control,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<SigninSchema>({
+    resolver: zodResolver(signinSchema) as unknown as Resolver<SigninSchema>,
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const [email, setEmail] = useState<string>("");
+  const [senha, setSenha] = useState<string>("");
+
+  const regex_email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const [isErrorInEmail, setIsErrorInEmail] = useState<boolean>(false);
+  const [isErrorInSenha, setIsErrorInSenha] = useState<boolean>(false);
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setSeconds((s) => s + 1);
-    }, 1000);
+    if (email == "") {
+      setIsErrorInEmail(false);
+    } else {
+      if (!regex_email.test(email)) {
+        setIsErrorInEmail(true);
+      } else {
+        setIsErrorInEmail(false);
+      }
+    }
+  }, [email]);
 
-    return () => clearInterval(id); // cleanup
-  }, []); // [] = roda 1x ao montar
+  //Equanto as fontes não carregam, ira exibir um circulo de carregamento apenas para efeito visual
+  if (!fontsLoaded && !fontError) {
+    return <ActivityIndicator />;
+  }
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text style={{ fontSize: 40 }}>{seconds}s</Text>
+    <View className="bg-white flex-1 justify-center items-center">
+      <View className="bg-black border rounded-xl p-4">
+        <View className="mb-8 items-center">
+          <Text className="font-sans text-black text-2xl">Entrar</Text>
+        </View>
+        <View className="gap-4">
+          <CampoDeTexto
+            label="E-mail"
+            value={email}
+            setValue={setEmail}
+            errorMessage="E-mail invalido"
+            placeholder="Digite o e-mail"
+            isError={isErrorInEmail}
+          />
+          <CampoDeTexto
+            label="Senha"
+            value={senha}
+            setValue={setSenha}
+            errorMessage="Senha invalida"
+            isError={isErrorInSenha}
+          />
+        </View>
+        <View className="items-center">
+          <Botao className="w-20" children={<Text>Entrar</Text>} />
+        </View>
+      </View>
     </View>
   );
-}
+};
+export default App;
