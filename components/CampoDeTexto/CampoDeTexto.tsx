@@ -36,7 +36,7 @@ const CampoDeTexto = ({
           onChangeText={(e) => setValue(e)}
           placeholder={placeholder}
           className={cn(
-            "bg-white p-4 w-72 text-lg rounded-2xl",
+            "bg-white px-4 w-72 text-lg rounded-xl h-16",
             textInputClassName
           )}
         />

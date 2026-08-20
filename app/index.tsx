@@ -2,12 +2,10 @@ import Botao from "@/components/Botao/botao";
 import CampoDeTexto from "@/components/CampoDeTexto/CampoDeTexto";
 import StyledLinearGradient from "@/components/StyledLinearGradient/StyledLinearGradient";
 import "@/global.css";
-import { signinSchema, SigninSchema } from "@/schemas/signin.schema";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { BasicSignin } from "@/service/user.service";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect, useState } from "react";
-import { Resolver, useForm } from "react-hook-form";
 import { ActivityIndicator, Text, View } from "react-native";
 
 const App = () => {
@@ -28,27 +26,11 @@ const App = () => {
     }
   }, [fontsLoaded, fontError]);
 
-  // Controler do react hook form
-  const {
-    control,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm<SigninSchema>({
-    resolver: zodResolver(signinSchema) as unknown as Resolver<SigninSchema>,
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
-
   const [email, setEmail] = useState<string>("");
   const [senha, setSenha] = useState<string>("");
 
   const regex_email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const [isErrorInEmail, setIsErrorInEmail] = useState<boolean>(false);
-  const [isErrorInSenha, setIsErrorInSenha] = useState<boolean>(false);
 
   useEffect(() => {
     if (email == "") {
@@ -61,6 +43,29 @@ const App = () => {
       }
     }
   }, [email]);
+
+  const regex_senha = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+  const [isErrorInSenha, setIsErrorInSenha] = useState<boolean>(false);
+  useEffect(() => {
+    if (senha == "") {
+      setIsErrorInSenha(false);
+    } else {
+      if (!regex_senha.test(senha)) {
+        setIsErrorInSenha(true);
+      } else {
+        setIsErrorInSenha(false);
+      }
+    }
+  }, [senha]);
+
+  const onSubmit = async (email: string, senha: string) => {
+    const resposta = await BasicSignin(email, senha);
+    if (resposta == 200) {
+      console.log("Bem vindo");
+    } else {
+      console.error("E-mail ou senha incorretos");
+    }
+  };
 
   //Equanto as fontes não carregam, ira exibir um circulo de carregamento apenas para efeito visual
   if (!fontsLoaded && !fontError) {
@@ -104,6 +109,12 @@ const App = () => {
                 <Text className="text-white text-xl">Entrar</Text>
               </View>
             }
+            disabled={
+              isErrorInEmail || isErrorInSenha || email == "" || senha == ""
+                ? true
+                : false
+            }
+            onPress={() => onSubmit(email, senha)}
           />
         </View>
       </View>

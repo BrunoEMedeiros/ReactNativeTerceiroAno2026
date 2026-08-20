@@ -50,4 +50,4 @@ const CampoTextHookForm = <T extends FieldValues>({
   );
 };
 
-export default React.memo(CampoTextHookForm) as typeof CampoTextHookForm;
+export default CampoTextHookForm;
