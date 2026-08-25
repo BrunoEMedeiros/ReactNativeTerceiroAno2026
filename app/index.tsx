@@ -4,12 +4,15 @@ import StyledLinearGradient from "@/components/StyledLinearGradient/StyledLinear
 import "@/global.css";
 import { BasicSignin } from "@/service/user.service";
 import { useFonts } from "expo-font";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Text, View } from "react-native";
+import { ActivityIndicator, Alert, Text, View } from "react-native";
 
 const App = () => {
+  //Iniciando hook de roteamento manual do expo router
+  const router = useRouter();
+
   //Importando fontes externas
   const [fontsLoaded, fontError] = useFonts({
     "GoogleSans-Regular": require("@/assets/fonts/GoogleSans-Regular.ttf"),
@@ -62,9 +65,9 @@ const App = () => {
   const onSubmit = async (email: string, senha: string) => {
     const resposta = await BasicSignin(email, senha);
     if (resposta == 200) {
-      console.log("Bem vindo");
+      router.navigate("/home");
     } else {
-      console.log("E-mail ou senha incorretos");
+      Alert.alert("Usuario ou senha incorretos");
     }
   };
 
