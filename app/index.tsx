@@ -63,7 +63,7 @@ const App = () => {
     if (resposta == 200) {
       console.log("Bem vindo");
     } else {
-      console.error("E-mail ou senha incorretos");
+      console.log("E-mail ou senha incorretos");
     }
   };
 
