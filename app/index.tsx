@@ -4,6 +4,7 @@ import StyledLinearGradient from "@/components/StyledLinearGradient/StyledLinear
 import "@/global.css";
 import { BasicSignin } from "@/service/user.service";
 import { useFonts } from "expo-font";
+import { Link } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Text, View } from "react-native";
@@ -116,6 +117,11 @@ const App = () => {
             }
             onPress={() => onSubmit(email, senha)}
           />
+        </View>
+        <View>
+          <Link href={"/cadastro"}>
+            <Text>Cadastre-se</Text>
+          </Link>
         </View>
       </View>
     </StyledLinearGradient>
