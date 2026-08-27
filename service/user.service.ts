@@ -20,3 +20,24 @@ export async function BasicSignin(email: string, password: string) {
     throw new Error();
   }
 }
+
+//Basico
+export async function CreateAccount(
+  name: string,
+  email: string,
+  password: string
+) {
+  try {
+    const { status } = await api.post("/createAccount", {
+      name,
+      email,
+      password,
+    });
+    return status;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      return error.status;
+    }
+    throw new Error();
+  }
+}

@@ -3,32 +3,13 @@ import CampoDeTexto from "@/components/CampoDeTexto/CampoDeTexto";
 import StyledLinearGradient from "@/components/StyledLinearGradient/StyledLinearGradient";
 import "@/global.css";
 import { BasicSignin } from "@/service/user.service";
-import { useFonts } from "expo-font";
 import { Link, useRouter } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, Text, View } from "react-native";
+import { Alert, Text, View } from "react-native";
 
 const App = () => {
   //Iniciando hook de roteamento manual do expo router
   const router = useRouter();
-
-  //Importando fontes externas
-  const [fontsLoaded, fontError] = useFonts({
-    "GoogleSans-Regular": require("@/assets/fonts/GoogleSans-Regular.ttf"),
-    "GoogleSans-Bold": require("@/assets/fonts/GoogleSans-Bold.ttf"),
-  });
-
-  //Chamando a splashScreen para carregar no momento certo
-  SplashScreen.preventAutoHideAsync();
-
-  //A splash screen sera retirada apenas quando as fontes terminarem de carregar
-  useEffect(() => {
-    if (fontsLoaded || fontError) {
-      SplashScreen.hide();
-      if (fontError) throw fontError;
-    }
-  }, [fontsLoaded, fontError]);
 
   const [email, setEmail] = useState<string>("");
   const [senha, setSenha] = useState<string>("");
@@ -70,11 +51,6 @@ const App = () => {
       Alert.alert("Usuario ou senha incorretos");
     }
   };
-
-  //Equanto as fontes não carregam, ira exibir um circulo de carregamento apenas para efeito visual
-  if (!fontsLoaded && !fontError) {
-    return <ActivityIndicator />;
-  }
 
   return (
     <StyledLinearGradient
@@ -121,7 +97,7 @@ const App = () => {
             onPress={() => onSubmit(email, senha)}
           />
         </View>
-        <View>
+        <View className="flex-row justify-center m-6">
           <Link href={"/cadastro"}>
             <Text>Cadastre-se</Text>
           </Link>
