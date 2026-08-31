@@ -31,7 +31,7 @@ export default function RootLayout() {
     <Stack screenOptions={{ header: Header }}>
       <Stack.Screen name="index" />
       <Stack.Screen name="cadastro" options={{ header: Header }} />
-      <Stack.Screen name="home" />
+      <Stack.Screen name="(tabs)" />
     </Stack>
   );
 }

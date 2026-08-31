@@ -46,7 +46,7 @@ const App = () => {
   const onSubmit = async (email: string, senha: string) => {
     const resposta = await BasicSignin(email, senha);
     if (resposta == 200) {
-      router.navigate("/home");
+      router.navigate("/(tabs)");
     } else {
       Alert.alert("Usuario ou senha incorretos");
     }
