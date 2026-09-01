@@ -1,6 +1,12 @@
 import { cn } from "@/lib/cn";
 import React from "react";
-import { Text, TextInput, View } from "react-native";
+import {
+  KeyboardTypeOptions,
+  Text,
+  TextInput,
+  TextInputProps,
+  View,
+} from "react-native";
 
 type CampoDeTextoProps = {
   label: string;
@@ -12,6 +18,11 @@ type CampoDeTextoProps = {
   errorMessage?: string;
   isError: boolean;
   setValue: React.Dispatch<React.SetStateAction<string>>;
+  keyboardType?: KeyboardTypeOptions;
+  secureTextEntry?: boolean;
+  autoCapitalize?: TextInputProps["autoCapitalize"];
+  autoComplete?: TextInputProps["autoComplete"];
+  returnKeyType?: TextInputProps["returnKeyType"];
 };
 
 const CampoDeTexto = ({
@@ -24,6 +35,11 @@ const CampoDeTexto = ({
   errorMessage = "",
   isError,
   setValue,
+  keyboardType = "default",
+  secureTextEntry = false,
+  autoCapitalize = "sentences",
+  autoComplete,
+  returnKeyType,
 }: CampoDeTextoProps) => {
   return (
     <View>
@@ -35,6 +51,11 @@ const CampoDeTexto = ({
           value={value}
           onChangeText={(e) => setValue(e)}
           placeholder={placeholder}
+          keyboardType={keyboardType}
+          secureTextEntry={secureTextEntry}
+          autoCapitalize={autoCapitalize}
+          autoComplete={autoComplete}
+          returnKeyType={returnKeyType}
           className={cn(
             "bg-white px-4 w-72 text-lg rounded-xl h-16",
             textInputClassName

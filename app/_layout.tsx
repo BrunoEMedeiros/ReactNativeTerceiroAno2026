@@ -1,8 +1,9 @@
-import Header from "@/components/Header/Header";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
-import { useEffect } from "react";
+import { SplashScreen, Stack, Tabs } from "expo-router";
+import React, { useEffect } from "react";
 import { ActivityIndicator } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
+import Header from "@/components/Header/Header";
 
 export default function RootLayout() {
   //Importando fontes externas

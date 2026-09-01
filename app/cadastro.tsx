@@ -1,12 +1,12 @@
 import Botao from "@/components/Botao/botao";
 import CampoDeTexto from "@/components/CampoDeTexto/CampoDeTexto";
 import { CreateAccount } from "@/service/user.service";
+import { useHeaderHeight } from "@react-navigation/elements";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
   Alert,
   KeyboardAvoidingView,
-  Platform,
   ScrollView,
   Text,
   View,
@@ -15,6 +15,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const Cadastro = () => {
   const router = useRouter();
+  const headerHeight = useHeaderHeight();
 
   const [email, setEmail] = useState<string>("");
   const [senha, setSenha] = useState<string>("");
@@ -93,8 +94,8 @@ const Cadastro = () => {
     <SafeAreaView className="flex-1 items-center">
       <KeyboardAvoidingView
         className="flex-1 w-full items-center"
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+        behavior="padding"
+        keyboardVerticalOffset={headerHeight}
       >
         <ScrollView
           className="w-full"
@@ -110,6 +111,9 @@ const Cadastro = () => {
               setValue={setNome}
               placeholder="Digite seu nome"
               textInputClassName="w-80"
+              autoCapitalize="words"
+              autoComplete="name"
+              returnKeyType="next"
             />
             <CampoDeTexto
               label="E-mail"
@@ -119,6 +123,10 @@ const Cadastro = () => {
               placeholder="Digite o e-mail"
               isError={isErrorInEmail}
               textInputClassName="w-80"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoComplete="email"
+              returnKeyType="next"
             />
             <CampoDeTexto
               label="Senha"
@@ -128,6 +136,10 @@ const Cadastro = () => {
               placeholder="Digite sua senha"
               isError={isErrorInSenha}
               textInputClassName="w-80"
+              secureTextEntry
+              autoCapitalize="none"
+              autoComplete="password-new"
+              returnKeyType="next"
             />
             <CampoDeTexto
               label="Confirme a senha"
@@ -137,6 +149,10 @@ const Cadastro = () => {
               placeholder="Confirme sua senha"
               isError={isErrorInConfirmarSenha}
               textInputClassName="w-80"
+              secureTextEntry
+              autoCapitalize="none"
+              autoComplete="password-new"
+              returnKeyType="done"
             />
             <View className="flex-row justify-center">
               <Botao
