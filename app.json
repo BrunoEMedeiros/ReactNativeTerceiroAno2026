@@ -40,7 +40,13 @@
           }
         }
       ],
-      "expo-font"
+      "expo-font",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "O aplicativo precisa acessar suas fotos para anexar uma imagem à postagem."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

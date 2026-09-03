@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 
-type CampoDeTextoProps = {
+type CampoDeTextoProps = TextInputProps & {
   label: string;
   placeholder?: string;
   viewClassName?: string;
@@ -40,6 +40,7 @@ const CampoDeTexto = ({
   autoCapitalize = "sentences",
   autoComplete,
   returnKeyType,
+  ...props
 }: CampoDeTextoProps) => {
   return (
     <View>
@@ -60,6 +61,7 @@ const CampoDeTexto = ({
             "bg-white px-4 w-72 text-lg rounded-xl h-16",
             textInputClassName
           )}
+          {...props}
         />
       </View>
       {isError ? (
