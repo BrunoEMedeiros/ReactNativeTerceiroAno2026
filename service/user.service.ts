@@ -11,11 +11,11 @@ export async function Signin({ email, password }: SigninSchema) {
 //Basico
 export async function BasicSignin(email: string, password: string) {
   try {
-    const { status } = await api.post("/signin", { email, password });
-    return status;
+    const { status, data } = await api.post("/signin", { email, password });
+    return { status, userId: data != null ? String(data) : undefined };
   } catch (error) {
     if (isAxiosError(error)) {
-      return error.status;
+      return { status: error.status, userId: undefined };
     }
     throw new Error();
   }

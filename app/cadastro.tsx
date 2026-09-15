@@ -1,7 +1,7 @@
 import Botao from "@/components/Botao/botao";
 import CampoDeTexto from "@/components/CampoDeTexto/CampoDeTexto";
 import { CreateAccount } from "@/service/user.service";
-import { useHeaderHeight } from "@react-navigation/elements";
+import { useHeaderHeight } from "expo-router/react-navigation";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {

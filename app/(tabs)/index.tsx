@@ -18,6 +18,7 @@ const Home = () => {
   const router = useRouter();
 
   const [postagens, setPostagens] = useState<Postagem[]>([]);
+
   const [carregando, setCarregando] = useState(true);
   const [atualizando, setAtualizando] = useState(false);
 
@@ -60,7 +61,7 @@ const Home = () => {
       )}
 
       <View className="bg-blue-600 rounded-full w-20 h-20 absolute bottom-6 right-6 items-center justify-center">
-        <Pressable onPress={() => router.push("/posts/newPost")}>
+        <Pressable onPress={() => router.push("/newPost")}>
           <FontAwesome name="plus" size={32} color="#fff" />
         </Pressable>
       </View>

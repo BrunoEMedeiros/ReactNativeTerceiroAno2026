@@ -2,14 +2,28 @@ import Botao from "@/components/Botao/botao";
 import CampoDeTexto from "@/components/CampoDeTexto/CampoDeTexto";
 import StyledLinearGradient from "@/components/StyledLinearGradient/StyledLinearGradient";
 import "@/global.css";
+import { obterUserId, salvarUserId } from "@/lib/secureStore";
 import { BasicSignin } from "@/service/user.service";
 import { Link, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Alert, Text, View } from "react-native";
+import { ActivityIndicator, Alert, Text, View } from "react-native";
 
 const App = () => {
   //Iniciando hook de roteamento manual do expo router
   const router = useRouter();
+
+  const [verificandoSessao, setVerificandoSessao] = useState(true);
+
+  //Se o usuario ja tiver logado antes, redireciona direto para as tabs
+  useEffect(() => {
+    obterUserId().then((userId) => {
+      if (userId) {
+        router.replace("/(tabs)");
+      } else {
+        setVerificandoSessao(false);
+      }
+    });
+  }, [router]);
 
   const [email, setEmail] = useState<string>("");
   const [senha, setSenha] = useState<string>("");
@@ -44,13 +58,18 @@ const App = () => {
   }, [senha]);
 
   const onSubmit = async (email: string, senha: string) => {
-    const resposta = await BasicSignin(email, senha);
-    if (resposta == 200) {
-      router.navigate("/(tabs)");
+    const { status, userId } = await BasicSignin(email, senha);
+    if (status == 200) {
+      if (userId) await salvarUserId(userId);
+      router.replace("/(tabs)");
     } else {
       Alert.alert("Usuario ou senha incorretos");
     }
   };
+
+  if (verificandoSessao) {
+    return <ActivityIndicator className="flex-1" size="large" />;
+  }
 
   return (
     <StyledLinearGradient

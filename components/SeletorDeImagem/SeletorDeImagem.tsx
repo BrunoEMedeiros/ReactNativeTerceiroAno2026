@@ -1,4 +1,5 @@
 import { cn } from "@/lib/cn";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import React from "react";
@@ -27,11 +28,25 @@ const SeletorDeImagem = ({
   labelClassName = "",
   touchableClassName = "",
 }: SeletorDeImagemProps) => {
-  const escolherImagem = async () => {
+  const escolherDaGaleria = async () => {
     const permissao = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permissao.granted) return;
 
     const resultado = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      quality: 0.8,
+    });
+
+    if (!resultado.canceled) {
+      setValue(resultado.assets[0]);
+    }
+  };
+
+  const tirarFoto = async () => {
+    const permissao = await ImagePicker.requestCameraPermissionsAsync();
+    if (!permissao.granted) return;
+
+    const resultado = await ImagePicker.launchCameraAsync({
       mediaTypes: ["images"],
       quality: 0.8,
     });
@@ -47,7 +62,7 @@ const SeletorDeImagem = ({
         {label}
       </Text>
       <TouchableOpacity
-        onPress={escolherImagem}
+        onPress={escolherDaGaleria}
         className={cn(
           "bg-white w-72 h-40 rounded-xl items-center justify-center overflow-hidden",
           touchableClassName
@@ -62,6 +77,13 @@ const SeletorDeImagem = ({
         ) : (
           <Text className="text-gray-400 text-lg">Selecionar imagem</Text>
         )}
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={tirarFoto}
+        className="flex-row items-center gap-2 self-start"
+      >
+        <Ionicons name="camera" size={18} color="#4b5563" />
+        <Text className="text-gray-600">Tirar foto</Text>
       </TouchableOpacity>
       {isError ? (
         <Text className="text-red-600 mt-2">{errorMessage}</Text>

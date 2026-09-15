@@ -2,6 +2,7 @@ import Botao from "@/components/Botao/botao";
 import CampoDeTexto from "@/components/CampoDeTexto/CampoDeTexto";
 import SeletorDeImagem from "@/components/SeletorDeImagem/SeletorDeImagem";
 import api from "@/lib/axios.config";
+import { obterUserId } from "@/lib/secureStore";
 import * as ImagePicker from "expo-image-picker";
 import React, { useState } from "react";
 import { Alert, Text, View } from "react-native";
@@ -30,9 +31,12 @@ const NewPost = () => {
 
     if (tituloInvalido || textoInvalido || imagemInvalida) return;
 
+    const userId = await obterUserId();
+
     const formData = new FormData();
     formData.append("titulo", titulo);
     formData.append("texto", texto);
+    if (userId) formData.append("usuarioId", userId);
     formData.append("imagem", {
       uri: imagem.uri,
       name: imagem.fileName ?? "imagem.jpg",

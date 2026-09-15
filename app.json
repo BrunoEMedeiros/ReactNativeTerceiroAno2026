@@ -44,9 +44,14 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "O aplicativo precisa acessar suas fotos para anexar uma imagem à postagem."
+          "photosPermission": "O aplicativo precisa acessar suas fotos para anexar uma imagem à postagem.",
+          "cameraPermission": "O aplicativo precisa acessar sua câmera para tirar uma foto para a postagem."
         }
-      ]
+      ],
+      "expo-image",
+      "expo-status-bar",
+      "expo-web-browser",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,
