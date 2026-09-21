@@ -58,9 +58,7 @@ const SeletorDeImagem = ({
 
   return (
     <View className={cn("gap-1", viewClassName)}>
-      <Text className={cn("text-black text-xl", labelClassName)}>
-        {label}
-      </Text>
+      <Text className={cn("text-black text-xl", labelClassName)}>{label}</Text>
       <TouchableOpacity
         onPress={escolherDaGaleria}
         className={cn(

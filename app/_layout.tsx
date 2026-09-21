@@ -31,6 +31,7 @@ export default function RootLayout() {
   return (
     <Stack screenOptions={{ header: Header }}>
       <Stack.Screen name="index" />
+      <Stack.Screen name="login" />
       <Stack.Screen name="cadastro" />
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="newPost" />
