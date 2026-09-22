@@ -1,4 +1,4 @@
-import { bytesToBase64 } from "@/lib/base64";
+import api from "@/lib/axios.config";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -8,8 +8,6 @@ export type Postagem = {
   id: number;
   titulo: string;
   texto: string;
-  data: { type: "Buffer"; data: number[] };
-  mimetype: string;
 };
 
 type PostagemCard = Omit<Postagem, "texto">;
@@ -20,7 +18,7 @@ type CartaoDePostagemProps = {
 
 const CartaoDePostagem = ({ postagem }: CartaoDePostagemProps) => {
   const router = useRouter();
-  const imagemUri = `data:${postagem.mimetype};base64,${bytesToBase64(postagem.data.data)}`;
+  const imagemUri = `${api.defaults.baseURL}/posts/${postagem.id}/imagem`;
 
   return (
     <Pressable

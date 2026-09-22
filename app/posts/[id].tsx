@@ -1,6 +1,5 @@
 import { Postagem } from "@/components/CartaoDePostagem/CartaoDePostagem";
 import api from "@/lib/axios.config";
-import { bytesToBase64 } from "@/lib/base64";
 import { Image } from "expo-image";
 import { useFocusEffect, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useState } from "react";
@@ -35,7 +34,7 @@ const PostDetailsPage = () => {
     return <ActivityIndicator className="flex-1" size="large" />;
   }
 
-  const imagemUri = `data:${postagem.mimetype};base64,${bytesToBase64(postagem.data.data)}`;
+  const imagemUri = `${api.defaults.baseURL}/posts/${postagem.id}/imagem`;
 
   return (
     <View className="flex-1 gap-20">

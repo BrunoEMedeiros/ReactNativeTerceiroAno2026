@@ -2,11 +2,11 @@ import Botao from "@/components/Botao/botao";
 import CampoDeTexto from "@/components/CampoDeTexto/CampoDeTexto";
 import StyledLinearGradient from "@/components/StyledLinearGradient/StyledLinearGradient";
 import "@/global.css";
-import { obterUserId, salvarUserId } from "@/lib/secureStore";
+import { salvarUserId } from "@/lib/secureStore";
 import { BasicSignin } from "@/service/user.service";
-import { Link, Redirect, useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, Text, View } from "react-native";
+import { Link, useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import { Alert, Text, View } from "react-native";
 
 const LoginPage = () => {
   const router = useRouter();
