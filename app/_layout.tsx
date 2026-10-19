@@ -36,6 +36,7 @@ export default function RootLayout() {
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="newPost" />
       <Stack.Screen name="posts/[id]" />
+      <Stack.Screen name="posts/editar/[id]" />
     </Stack>
   );
 }

@@ -1,9 +1,10 @@
+import Botao from "@/components/Botao/botao";
 import { Postagem } from "@/components/CartaoDePostagem/CartaoDePostagem";
 import api from "@/lib/axios.config";
 import { Image } from "expo-image";
-import { useFocusEffect, useLocalSearchParams } from "expo-router";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import React, { useCallback, useState } from "react";
-import { ActivityIndicator, Text, View } from "react-native";
+import { ActivityIndicator, Alert, Text, View } from "react-native";
 
 // routes.post("/posts", async (req, res) => {
 //   const { titulo, texto } = req.body;
@@ -63,8 +64,50 @@ import { ActivityIndicator, Text, View } from "react-native";
 //   return res.send(imagem.data);
 // });
 
+// routes.put("/posts/:id", async (req, res) => {
+//   const { id } = req.params;
+//   const { titulo, texto } = req.body;
+
+//   const [postagem] = await sql`
+//     update postagens set titulo = ${titulo}, texto = ${texto}
+//     where id = ${id}
+//     returning id
+//   `;
+
+//   if (!postagem) {
+//     return res.status(404).json({ message: "Postagem não encontrada" });
+//   }
+
+//   // A imagem é opcional na edição: só troca se uma nova for enviada
+//   if (req.files?.imagem) {
+//     const { name, data, mimetype } = req.files.imagem;
+//     await sql`
+//       update imagens_postagens set name = ${name}, data = ${data}, mimetype = ${mimetype}
+//       where id_postagem = ${id}
+//     `;
+//   }
+
+//   return res.status(200).json({ id: postagem.id });
+// });
+
+// routes.delete("/posts/:id", async (req, res) => {
+//   const { id } = req.params;
+
+//   // Apaga a imagem primeiro por causa da chave estrangeira id_postagem
+//   await sql`delete from imagens_postagens where id_postagem = ${id}`;
+//   const postagens =
+//     await sql`delete from postagens where id = ${id} returning id`;
+
+//   if (postagens.length === 0) {
+//     return res.status(404).json({ message: "Postagem não encontrada" });
+//   }
+
+//   return res.status(204).end();
+// });
+
 const PostDetailsPage = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const router = useRouter();
 
   const [postagem, setPostagem] = useState<Postagem | null>(null);
   const [carregando, setCarregando] = useState(true);
@@ -92,6 +135,24 @@ const PostDetailsPage = () => {
     return <ActivityIndicator className="flex-1" size="large" />;
   }
 
+  const excluirPostagem = () => {
+    Alert.alert("Excluir postagem", "Tem certeza que deseja excluir?", [
+      { text: "Cancelar", style: "cancel" },
+      {
+        text: "Excluir",
+        style: "destructive",
+        onPress: async () => {
+          try {
+            await api.delete(`/posts/${id}`);
+            router.back();
+          } catch (error) {
+            Alert.alert("Erro", "Não foi possível excluir a postagem");
+          }
+        },
+      },
+    ]);
+  };
+
   const imagemUri = `${api.defaults.baseURL}/posts/${postagem.id}/imagem`;
 
   return (
@@ -104,6 +165,21 @@ const PostDetailsPage = () => {
       <View className="p-4 gap-1">
         <Text className="text-black text-xl font-bold">{postagem.titulo}</Text>
         <Text className="text-black text-xl font-bold">{postagem.texto}</Text>
+      </View>
+      <View className="flex-row justify-center gap-4 px-4">
+        <Botao
+          onPress={() =>
+            router.push({
+              pathname: "/posts/editar/[id]",
+              params: { id: postagem.id },
+            })
+          }
+        >
+          <Text className="text-white text-center font-bold">Editar</Text>
+        </Botao>
+        <Botao className="bg-red-600" onPress={excluirPostagem}>
+          <Text className="text-white text-center font-bold">Excluir</Text>
+        </Botao>
       </View>
     </View>
   );
